@@ -152,7 +152,7 @@ class TestEditDeleteNote(TestCase):
         notes_count = Note.objects.count()
         response = self.author_client.post(
             URL_TO_ADD,
-            data = self.form_data
+            data=self.form_data
         )
         self.assertFormError(
             response,
