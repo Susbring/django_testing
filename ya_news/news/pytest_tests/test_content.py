@@ -30,6 +30,7 @@ def test_aut_client_form(author_client, detail_url):
     assert 'form' in response.context
     assert isinstance(response.context['form'], CommentForm)
 
+
 def test_comment_order(client,
                        news,
                        comments_list,

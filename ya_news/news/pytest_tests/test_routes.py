@@ -7,6 +7,7 @@ import pytest
 
 pytestmark = pytest.mark.django_db
 
+
 @pytest.mark.parametrize(
     'url_fixture, client_fixture, expected_status',
     (

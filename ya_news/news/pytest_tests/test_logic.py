@@ -6,10 +6,11 @@ from pytest_django.asserts import assertFormError, assertRedirects
 from news.forms import BAD_WORDS, WARNING
 from news.models import Comment
 
+
 pytestmark = pytest.mark.django_db
 
-
 FORM_DATA = {'text': 'Новый комментарий'}
+
 
 def test_anon_cant_comment(client, detail_url):
     comments_count = Comment.objects.count()
@@ -50,6 +51,7 @@ def test_cant_use_bad_words(author_client, detail_url):
     comment_count = Comment.objects.count()
     assert comments_count == comment_count
 
+
 def test_auth_can_delete_comment(
         author_client,
         delete_url,
@@ -61,6 +63,7 @@ def test_auth_can_delete_comment(
     assertRedirects(response, url_to_comments)
     comment_count = Comment.objects.count()
     assert comment_count == comments_count - 1
+
 
 def test_auth_can_edit_comment(
         author_client,
@@ -88,6 +91,7 @@ def test_user_cant_delete_comment_another_user(
     assert response.status_code == HTTPStatus.NOT_FOUND
     comment_count = Comment.objects.count()
     assert comment_count == comments_count
+
 
 def test_user_cant_edit_comment_another_user(
         admin_client,
