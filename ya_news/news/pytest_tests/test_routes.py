@@ -33,11 +33,11 @@ def test_pages_availability(request,
 
 
 @pytest.mark.parametrize(
-        'url_fixture',
-        (
-            'edit_url',
-            'delete_url'
-        )
+    'url_fixture',
+    (
+        'edit_url',
+        'delete_url'
+    )
 )
 def test_redirect_for_anon(
         request,

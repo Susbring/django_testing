@@ -13,11 +13,13 @@ from news.models import Comment, News
 def author(django_user_model):
     return django_user_model.objects.create(username='Автор')
 
+
 @pytest.fixture
 def author_client(author):
     client = Client()
     client.force_login(author)
     return client
+
 
 @pytest.fixture
 def news():
@@ -27,6 +29,7 @@ def news():
     )
     return news
 
+
 @pytest.fixture
 def comment(author, news):
     comment = Comment.objects.create(
@@ -35,6 +38,7 @@ def comment(author, news):
         text='Текст комментария',
     )
     return comment
+
 
 @pytest.fixture
 def comments_list(news, author):
