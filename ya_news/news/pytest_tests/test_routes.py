@@ -7,7 +7,6 @@ import pytest
 
 pytestmark = pytest.mark.django_db
 
-
 @pytest.mark.parametrize(
     'url_fixture, client_fixture, expected_status',
     (
@@ -16,10 +15,20 @@ pytestmark = pytest.mark.django_db
         ('login_url', 'client', HTTPStatus.OK),
         ('logout_url', 'client', HTTPStatus.OK),
         ('signup_url', 'client', HTTPStatus.OK),
+        ('home_url', 'admin_client', HTTPStatus.OK),
+        ('detail_url', 'admin_client', HTTPStatus.OK),
+        ('login_url', 'admin_client', HTTPStatus.OK),
+        ('logout_url', 'admin_client', HTTPStatus.OK),
+        ('signup_url', 'admin_client', HTTPStatus.OK),
         ('edit_url', 'admin_client', HTTPStatus.NOT_FOUND),
         ('edit_url', 'author_client', HTTPStatus.OK),
         ('delete_url', 'admin_client', HTTPStatus.NOT_FOUND),
         ('delete_url', 'author_client', HTTPStatus.OK),
+        ('home_url', 'author_client', HTTPStatus.OK),
+        ('detail_url', 'author_client', HTTPStatus.OK),
+        ('login_url', 'author_client', HTTPStatus.OK),
+        ('logout_url', 'author_client', HTTPStatus.OK),
+        ('signup_url', 'author_client', HTTPStatus.OK),
     )
 )
 def test_pages_availability(request,
@@ -33,11 +42,11 @@ def test_pages_availability(request,
 
 
 @pytest.mark.parametrize(
-    'url_fixture',
-    (
-        'edit_url',
-        'delete_url'
-    )
+        'url_fixture',
+        (
+            'edit_url',
+            'delete_url'
+        )
 )
 def test_redirect_for_anon(
         request,

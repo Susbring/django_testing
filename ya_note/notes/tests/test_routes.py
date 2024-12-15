@@ -44,34 +44,17 @@ class TestRoutes(TestCase):
 
     def test_pages_availability(self):
         """Проверка страниц доступных для ананимного пользователя"""
-        for url in self.urls_for_anonymous:
-            with self.subTest(url=url):
-                response = self.client.get(url)
-                self.assertEqual(response.status_code, HTTPStatus.OK)
-
-    def test_availability_for_note_edit_delete(self):
-        """Проверка редактирования и удаления заметки для автора"""
-        user_status = (
-            (self.author_client, HTTPStatus.OK),
-            (self.reader_client, HTTPStatus.NOT_FOUND)
+        urls_and_users = (
+            (self.client, self.urls_for_anonymous, HTTPStatus.OK),
+            (self.author_client, self.urls_for_author, HTTPStatus.OK),
+            (self.author_client, self.urls_only_for_author, HTTPStatus.OK),
+            (self.reader_client, self.urls_only_for_author, HTTPStatus.NOT_FOUND)
         )
-        for user, status in user_status:
-            for url in self.urls_only_for_author:
-                with self.subTest(user=user, url=url):
-                    response = user.get(url)
-                    self.assertEqual(response.status_code, status)
-
-    def test_avilability_note_add_list(self):
-        """
-        Проверка доступности для авторизированного пользователя:
-        notes/
-        done/
-        add/
-        """
-        for url in self.urls_for_author:
-            with self.subTest(url=url):
-                response = self.author_client.get(url)
-                self.assertEqual(response.status_code, HTTPStatus.OK)
+        for client, urls, expected_status in urls_and_users:
+            for url in urls:
+                with self.subTest(user=client, url=url):
+                    response = client.get(url)
+                    self.assertEqual(response.status_code, expected_status)
 
     def test_redirect_for_anonymous(self):
         """
