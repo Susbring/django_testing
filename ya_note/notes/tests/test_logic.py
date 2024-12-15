@@ -148,7 +148,7 @@ class TestNoteCreation(TestCase):
         notes_count = Note.objects.count()
         response = self.author_client.post(
             URL_TO_ADD,
-            data = self.new_form_data
+            data=self.new_form_data
         )
         self.assertFormError(
             response,

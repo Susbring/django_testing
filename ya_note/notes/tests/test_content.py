@@ -1,5 +1,3 @@
-from django.test import TestCase, Client
-from django.urls import reverse
 from notes.forms import NoteForm
 from .common import CommonTestSetup
 

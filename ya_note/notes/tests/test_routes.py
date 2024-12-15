@@ -48,7 +48,11 @@ class TestRoutes(TestCase):
             (self.client, self.urls_for_anonymous, HTTPStatus.OK),
             (self.author_client, self.urls_for_author, HTTPStatus.OK),
             (self.author_client, self.urls_only_for_author, HTTPStatus.OK),
-            (self.reader_client, self.urls_only_for_author, HTTPStatus.NOT_FOUND)
+            (
+                self.reader_client,
+                self.urls_only_for_author,
+                HTTPStatus.NOT_FOUND
+            )
         )
         for client, urls, expected_status in urls_and_users:
             for url in urls:

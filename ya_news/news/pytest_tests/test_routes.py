@@ -4,8 +4,8 @@ from http import HTTPStatus
 from pytest_django.asserts import assertRedirects
 import pytest
 
-
 pytestmark = pytest.mark.django_db
+
 
 @pytest.mark.parametrize(
     'url_fixture, client_fixture, expected_status',
@@ -42,11 +42,11 @@ def test_pages_availability(request,
 
 
 @pytest.mark.parametrize(
-        'url_fixture',
-        (
-            'edit_url',
-            'delete_url'
-        )
+    'url_fixture',
+    (
+        'edit_url',
+        'delete_url'
+    )
 )
 def test_redirect_for_anon(
         request,
