@@ -10,6 +10,7 @@ class CommonTestSetup(TestCase):
 
     @classmethod
     def setUpTestData(cls):
+        """Общий сетап"""
         cls.author = User.objects.create(username='Денис Зуев')
         cls.note = Note.objects.create(
             title='Заголовок',
@@ -23,4 +24,6 @@ class CommonTestSetup(TestCase):
         cls.reader_client.force_login(cls.reader)
         cls.add_url = reverse('notes:add')
         cls.edit_url = reverse('notes:edit', args=(cls.note.slug,))
+        cls.delete_url = reverse('notes:delete', args=(cls.note.slug,))
         cls.list_url = reverse('notes:list')
+        cls.success_url = reverse('notes:success')

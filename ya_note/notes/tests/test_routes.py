@@ -2,28 +2,19 @@
 from http import HTTPStatus
 
 from django.contrib.auth import get_user_model
-from django.test import TestCase, Client
 from django.urls import reverse
 
 from notes.models import Note
+from .common import CommonTestSetup
 
 User = get_user_model()
 
 
-class TestRoutes(TestCase):
+class TestRoutes(CommonTestSetup):
 
     @classmethod
     def setUpTestData(cls):
-        cls.author = User.objects.create(username='Денис Зуев')
-        cls.note = Note.objects.create(
-            title='Заголовок',
-            text='Текст',
-            author=cls.author)
-        cls.reader = User.objects.create(username='Читатель простой')
-        cls.author_client = Client()
-        cls.reader_client = Client()
-        cls.author_client.force_login(cls.author)
-        cls.reader_client.force_login(cls.reader)
+        super().setUpTestData()
         cls.urls_for_anonymous = (
             reverse('notes:home'),
             reverse('users:login'),
@@ -46,13 +37,19 @@ class TestRoutes(TestCase):
         """Проверка страниц доступных для ананимного пользователя"""
         urls_and_users = (
             (self.client, self.urls_for_anonymous, HTTPStatus.OK),
+            (self.client, self.urls_for_author, HTTPStatus.FOUND),
+            (self.client, self.urls_only_for_author, HTTPStatus.FOUND),
             (self.author_client, self.urls_for_author, HTTPStatus.OK),
             (self.author_client, self.urls_only_for_author, HTTPStatus.OK),
-            (
-                self.reader_client,
-                self.urls_only_for_author,
-                HTTPStatus.NOT_FOUND
-            )
+            (self.reader_client,
+             self.urls_only_for_author,
+             HTTPStatus.NOT_FOUND),
+             (self.reader_client,
+             self.urls_for_anonymous,
+             HTTPStatus.OK),
+             (self.reader_client,
+              self.urls_for_author,
+              HTTPStatus.FOUND),
         )
         for client, urls, expected_status in urls_and_users:
             for url in urls:

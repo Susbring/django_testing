@@ -12,6 +12,7 @@ FORM_DATA = {'text': 'Новый комментарий'}
 
 
 def test_anon_cant_comment(client, detail_url):
+    """Тестирует, что анонимный пользователь не может оставить комментарий"""
     comments_count = Comment.objects.count()
     client.post(detail_url, data=FORM_DATA)
     comment_count = Comment.objects.count()
@@ -24,6 +25,9 @@ def test_auth_user_can_comment(
         news,
         author
 ):
+    """
+    Тестирует, что зарегестрированный пользователь может оставить комментарий
+    """
     Comment.objects.all().delete()
     comments_count = Comment.objects.count()
     response = author_client.post(
@@ -40,6 +44,7 @@ def test_auth_user_can_comment(
 
 
 def test_cant_use_bad_words(author_client, detail_url):
+    """Тестирует, что нельзя использовать плохие слова"""
     bad_word_data = {'text': f'{BAD_WORDS[0]}'}
     comments_count = Comment.objects.count()
     response = author_client.post(detail_url, data=bad_word_data)
@@ -57,6 +62,7 @@ def test_auth_can_delete_comment(
         url_to_comments,
         comment
 ):
+    """Тестирует, что автор комментария может его удалить"""
     comments_count = Comment.objects.count()
     response = author_client.delete(delete_url)
     assertRedirects(response, url_to_comments)
@@ -65,13 +71,13 @@ def test_auth_can_delete_comment(
     comment_count = Comment.objects.count()
     assert comment_count == comments_count - 1
 
-
 def test_auth_can_edit_comment(
         author_client,
         edit_url,
         url_to_comments,
         comment
 ):
+    """Тестирует, что автор комментария может его исправить"""
     comments_count = Comment.objects.count()
     auth = comment.author
     nws = comment.news
@@ -90,6 +96,10 @@ def test_user_cant_delete_comment_another_user(
         delete_url,
         comment
 ):
+    """
+    Тестирует, что пользователь не может удалить
+    комментарий другого пользователя
+    """
     comments_count = Comment.objects.count()
     response = admin_client.delete(delete_url)
     assert response.status_code == HTTPStatus.NOT_FOUND
@@ -106,6 +116,10 @@ def test_user_cant_edit_comment_another_user(
         edit_url,
         comment
 ):
+    """
+    Тестирует, что пользователь не может отредактировать
+    комментарий другого пользователя
+    """
     comments_count = Comment.objects.count()
     txt = comment.text
     auth = comment.author
