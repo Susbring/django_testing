@@ -29,7 +29,10 @@ def test_anon_client_no_form(client, detail_url):
 
 
 def test_aut_client_form(author_client, detail_url):
-    """Тестирует, что зарегестрированный пользователь имеет форму комментария"""
+    """
+    Тестирует, что зарегестрированный пользователь
+    имеет форму комментария
+    """
     response = author_client.get(detail_url)
     assert 'form' in response.context
     assert isinstance(response.context['form'], CommentForm)

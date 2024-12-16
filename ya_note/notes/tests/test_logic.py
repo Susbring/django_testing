@@ -1,6 +1,5 @@
 from http import HTTPStatus
 
-from django.urls import reverse
 from pytils.translit import slugify
 
 from notes.forms import WARNING
@@ -67,7 +66,6 @@ class TestNoteCreation(CommonTestSetup):
 
     def test_empty_slug(self):
         """Тест пустого slug"""
-        form_data = self.form_data.copy()
         self.form_data.pop('slug')
         notes_count = Note.objects.count()
         response = self.author_client.post(
@@ -110,7 +108,10 @@ class TestNoteCreation(CommonTestSetup):
         self.assertEqual(note_count, notes_count - 1)
 
     def test_user_cant_edit_note_of_another_user(self):
-        """Тестирует, что пользователь не может отредактировать заметку другого пользователя"""
+        """
+        Тестирует, что пользователь не может
+        отредактировать заметку другого пользователя
+        """
         response = self.reader_client.post(self.edit_url, data=self.form_data)
         self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
         note = Note.objects.get(id=self.note.id)
@@ -120,7 +121,10 @@ class TestNoteCreation(CommonTestSetup):
         self.assertEqual(note.author, self.author)
 
     def test_user_cant_delete_note_of_another_user(self):
-        """Тестирует, что пользователь не может удалить заметку другого пользователя"""
+        """
+        Тестирует, что пользователь не может
+        удалить заметку другого пользователя
+        """
         notes_count_before = Note.objects.count()
         response = self.reader_client.post(self.delete_url)
         self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
