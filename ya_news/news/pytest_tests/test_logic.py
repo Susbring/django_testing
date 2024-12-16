@@ -26,7 +26,8 @@ def test_auth_user_can_comment(
         author
 ):
     """
-    Тестирует, что зарегестрированный пользователь может оставить комментарий
+    Тестирует, что зарегестрированный 
+    пользователь может оставить комментарий
     """
     Comment.objects.all().delete()
     comments_count = Comment.objects.count()
@@ -70,6 +71,7 @@ def test_auth_can_delete_comment(
         Comment.objects.get(pk=comment.pk)
     comment_count = Comment.objects.count()
     assert comment_count == comments_count - 1
+
 
 def test_auth_can_edit_comment(
         author_client,

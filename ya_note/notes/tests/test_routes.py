@@ -4,7 +4,6 @@ from http import HTTPStatus
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 
-from notes.models import Note
 from .common import CommonTestSetup
 
 User = get_user_model()
@@ -44,12 +43,12 @@ class TestRoutes(CommonTestSetup):
             (self.reader_client,
              self.urls_only_for_author,
              HTTPStatus.NOT_FOUND),
-             (self.reader_client,
+            (self.reader_client,
              self.urls_for_anonymous,
              HTTPStatus.OK),
-             (self.reader_client,
-              self.urls_for_author,
-              HTTPStatus.FOUND),
+            (self.reader_client,
+             self.urls_for_author,
+             HTTPStatus.FOUND),
         )
         for client, urls, expected_status in urls_and_users:
             for url in urls:
